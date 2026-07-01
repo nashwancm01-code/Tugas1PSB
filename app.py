@@ -132,62 +132,73 @@ st.markdown("---")
 # ==========================================
 with col3:
     st.subheader("Band Pass Filter (BPF)")
-    # Menggunakan range slider agar Fc Low selalu di bawah Fc High
-    fc_bpf = st.slider("Rentang Fc BPF (Hz)", min_value=1.0, max_value=nyquist-1.0, value=(2.0, 20.0), step=1.0)
-    fc_low_bpf, fc_high_bpf = fc_bpf
     
-    # Perhitungan Bilinear untuk BPF
-    O_L_bpf = math.tan(math.pi * fc_low_bpf * Ts)
-    O_H_bpf = math.tan(math.pi * fc_high_bpf * Ts)
-    BW_bpf = O_H_bpf - O_L_bpf
-    w02_bpf = O_L_bpf * O_H_bpf
-    C_bpf = 1.0 + BW_bpf + w02_bpf
+    # Slider dibuat terpisah
+    fc_low_bpf = st.slider("Fc Low BPF (Hz)", min_value=1.0, max_value=nyquist-2.0, value=10.0, step=1.0)
+    fc_high_bpf = st.slider("Fc High BPF (Hz)", min_value=2.0, max_value=nyquist-1.0, value=25.0, step=1.0)
     
-    a0_bpf = BW_bpf / C_bpf
-    a1_bpf = 0.0
-    a2_bpf = -BW_bpf / C_bpf
-    b1_bpf = 2.0 * (w02_bpf - 1.0) / C_bpf
-    b2_bpf = (1.0 - BW_bpf + w02_bpf) / C_bpf
-    
-    # Tampilan Koefisien
-    c1, c2 = st.columns(2)
-    c1.text_input("b1", value=f"{b1_bpf:.15f}", key="bpf_b1")
-    c1.text_input("b2", value=f"{b2_bpf:.15f}", key="bpf_b2")
-    c2.text_input("a0", value=f"{a0_bpf:.15f}", key="bpf_a0")
-    c2.text_input("a1", value=f"{a1_bpf:.15f}", key="bpf_a1")
-    c2.text_input("a2", value=f"{a2_bpf:.15f}", key="bpf_a2")
-    
-    f_bpf, mag_bpf = get_frequency_response(a0_bpf, a1_bpf, a2_bpf, b1_bpf, b2_bpf, fs)
-    st.pyplot(plot_chart(f_bpf, mag_bpf, "Respon Filter BPF"))
+    # Validasi logika frekuensi
+    if fc_low_bpf >= fc_high_bpf:
+        st.warning("⚠️ Nilai **Fc High** harus lebih besar dari **Fc Low**!")
+    else:
+        # Perhitungan Bilinear untuk BPF
+        O_L_bpf = math.tan(math.pi * fc_low_bpf * Ts)
+        O_H_bpf = math.tan(math.pi * fc_high_bpf * Ts)
+        BW_bpf = O_H_bpf - O_L_bpf
+        w02_bpf = O_L_bpf * O_H_bpf
+        C_bpf = 1.0 + BW_bpf + w02_bpf
+        
+        a0_bpf = BW_bpf / C_bpf
+        a1_bpf = 0.0
+        a2_bpf = -BW_bpf / C_bpf
+        b1_bpf = 2.0 * (w02_bpf - 1.0) / C_bpf
+        b2_bpf = (1.0 - BW_bpf + w02_bpf) / C_bpf
+        
+        # Tampilan Koefisien
+        c1, c2 = st.columns(2)
+        c1.text_input("b1", value=f"{b1_bpf:.15f}", key="bpf_b1")
+        c1.text_input("b2", value=f"{b2_bpf:.15f}", key="bpf_b2")
+        c2.text_input("a0", value=f"{a0_bpf:.15f}", key="bpf_a0")
+        c2.text_input("a1", value=f"{a1_bpf:.15f}", key="bpf_a1")
+        c2.text_input("a2", value=f"{a2_bpf:.15f}", key="bpf_a2")
+        
+        f_bpf, mag_bpf = get_frequency_response(a0_bpf, a1_bpf, a2_bpf, b1_bpf, b2_bpf, fs)
+        st.pyplot(plot_chart(f_bpf, mag_bpf, "Respon Filter BPF"))
 
 # ==========================================
 # 4. BAND STOP FILTER (BSF) - KANAN BAWAH
 # ==========================================
 with col4:
     st.subheader("Band Stop Filter (BSF)")
-    fc_bsf = st.slider("Rentang Fc BSF (Hz)", min_value=1.0, max_value=nyquist-1.0, value=(45.0, 49.0), step=1.0)
-    fc_low_bsf, fc_high_bsf = fc_bsf
     
-    # Perhitungan Bilinear untuk BSF
-    O_L_bsf = math.tan(math.pi * fc_low_bsf * Ts)
-    O_H_bsf = math.tan(math.pi * fc_high_bsf * Ts)
-    BW_bsf = O_H_bsf - O_L_bsf
-    w02_bsf = O_L_bsf * O_H_bsf
-    C_bsf = 1.0 + BW_bsf + w02_bsf
+    # Slider dibuat terpisah
+    fc_low_bsf = st.slider("Fc Low BSF (Hz)", min_value=1.0, max_value=nyquist-2.0, value=10.0, step=1.0)
+    fc_high_bsf = st.slider("Fc High BSF (Hz)", min_value=2.0, max_value=nyquist-1.0, value=35.0, step=1.0)
     
-    a0_bsf = (1.0 + w02_bsf) / C_bsf
-    a1_bsf = 2.0 * (w02_bsf - 1.0) / C_bsf
-    a2_bsf = (1.0 + w02_bsf) / C_bsf
-    b1_bsf = 2.0 * (w02_bsf - 1.0) / C_bsf
-    b2_bsf = (1.0 - BW_bsf + w02_bsf) / C_bsf
-    
-    # Tampilan Koefisien
-    c1, c2 = st.columns(2)
-    c1.text_input("b1", value=f"{b1_bsf:.15f}", key="bsf_b1")
-    c1.text_input("b2", value=f"{b2_bsf:.15f}", key="bsf_b2")
-    c2.text_input("a0", value=f"{a0_bsf:.15f}", key="bsf_a0")
-    c2.text_input("a1", value=f"{a1_bsf:.15f}", key="bsf_a1")
-    c2.text_input("a2", value=f"{a2_bsf:.15f}", key="bsf_a2")
-    
-    f_bsf, mag_bsf = get_frequency_response(a0_bsf, a1_bsf, a2_bsf, b1_bsf, b2_bsf, fs)
-    st.pyplot(plot_chart(f_bsf, mag_bsf, "Respon Filter BSF"))
+    # Validasi logika frekuensi
+    if fc_low_bsf >= fc_high_bsf:
+        st.warning("⚠️ Nilai **Fc High** harus lebih besar dari **Fc Low**!")
+    else:
+        # Perhitungan Bilinear untuk BSF
+        O_L_bsf = math.tan(math.pi * fc_low_bsf * Ts)
+        O_H_bsf = math.tan(math.pi * fc_high_bsf * Ts)
+        BW_bsf = O_H_bsf - O_L_bsf
+        w02_bsf = O_L_bsf * O_H_bsf
+        C_bsf = 1.0 + BW_bsf + w02_bsf
+        
+        a0_bsf = (1.0 + w02_bsf) / C_bsf
+        a1_bsf = 2.0 * (w02_bsf - 1.0) / C_bsf
+        a2_bsf = (1.0 + w02_bsf) / C_bsf
+        b1_bsf = 2.0 * (w02_bsf - 1.0) / C_bsf
+        b2_bsf = (1.0 - BW_bsf + w02_bsf) / C_bsf
+        
+        # Tampilan Koefisien
+        c1, c2 = st.columns(2)
+        c1.text_input("b1", value=f"{b1_bsf:.15f}", key="bsf_b1")
+        c1.text_input("b2", value=f"{b2_bsf:.15f}", key="bsf_b2")
+        c2.text_input("a0", value=f"{a0_bsf:.15f}", key="bsf_a0")
+        c2.text_input("a1", value=f"{a1_bsf:.15f}", key="bsf_a1")
+        c2.text_input("a2", value=f"{a2_bsf:.15f}", key="bsf_a2")
+        
+        f_bsf, mag_bsf = get_frequency_response(a0_bsf, a1_bsf, a2_bsf, b1_bsf, b2_bsf, fs)
+        st.pyplot(plot_chart(f_bsf, mag_bsf, "Respon Filter BSF"))
