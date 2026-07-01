@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Butterworth Filter Orde 2", layout="wide")
 
 st.title("Desain Filter Digital Butterworth Orde 2")
-st.write("Dihitung murni menggunakan *Bilinear Transformation* tanpa library SciPy/Numpy.")
 
 # --- INPUT UTAMA ---
 Ts = st.number_input("Tsampling (s):", value=0.01, step=0.001, format="%.4f")
