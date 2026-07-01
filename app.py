@@ -176,6 +176,9 @@ with col3:
             st.caption("a2")
             st.code(f"{a2_bpf:.15f}")
         
+        # Tambahan st.latex untuk BPF
+        st.latex(rf"Y(n) = {-b1_bpf:.4f}Y(n-1) - {b2_bpf:.4f}Y(n-2) + {a0_bpf:.4f}X(n) + {a1_bpf:.4f}X(n-1) + {a2_bpf:.4f}X(n-2)")
+        
         f_bpf, mag_bpf = get_frequency_response(a0_bpf, a1_bpf, a2_bpf, b1_bpf, b2_bpf, fs)
         st.pyplot(plot_chart(f_bpf, mag_bpf, "Respon Filter BPF"))
 
@@ -217,5 +220,9 @@ with col4:
             st.caption("a2")
             st.code(f"{a2_bsf:.15f}")
         
+        # Tambahan st.latex untuk BSF
+        st.latex(rf"Y(n) = {-b1_bsf:.4f}Y(n-1) - {b2_bsf:.4f}Y(n-2) + {a0_bsf:.4f}X(n) + {a1_bsf:.4f}X(n-1) + {a2_bsf:.4f}X(n-2)")
+        
         f_bsf, mag_bsf = get_frequency_response(a0_bsf, a1_bsf, a2_bsf, b1_bsf, b2_bsf, fs)
         st.pyplot(plot_chart(f_bsf, mag_bsf, "Respon Filter BSF"))
+ 
