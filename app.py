@@ -3,7 +3,7 @@ import math
 import cmath
 import matplotlib.pyplot as plt
 
-# Konfigurasi halaman agar lebar (menyerupai layout Delphi)
+# Konfigurasi halaman 
 st.set_page_config(page_title="Butterworth Filter Orde 2", layout="wide")
 
 st.title("Desain Filter Digital Butterworth Orde 2")
@@ -18,7 +18,7 @@ st.markdown("---")
 
 # --- FUNGSI MATEMATIKA MURNI (TANPA NUMPY) ---
 def get_frequency_response(a0, a1, a2, b1, b2, fs_val):
-    """Menghitung respon frekuensi H(f) murni menggunakan math dan cmath"""
+    """Menghitung respon frekuensi H(f)"""
     f_vals = []
     mag_vals = []
     nyq = fs_val / 2.0
@@ -57,7 +57,7 @@ def plot_chart(f_vals, mag_vals, title):
     fig.tight_layout()
     return fig
 
-# --- LAYOUT 2x2 SEPERTI DELPHI ---
+# --- LAYOUT 2x2 ---
 col1, col2 = st.columns(2)
 col3, col4 = st.columns(2)
 
