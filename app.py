@@ -16,7 +16,7 @@ st.info(f"Frekuensi Sampling (Fs) = {fs} Hz | Batas Nyquist = {nyquist} Hz")
 
 st.markdown("---")
 
-# --- FUNGSI MATEMATIKA MURNI (TANPA NUMPY) ---
+# --- FUNGSI MATEMATIKA MURNI ---
 def get_frequency_response(a0, a1, a2, b1, b2, fs_val):
     """Menghitung respon frekuensi H(f)"""
     f_vals = []
